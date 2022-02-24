@@ -1,10 +1,10 @@
 {
-    "name": "marketplacer/magento2-plugin-seller-api",
+    "name": "marketplacer1/magento2-plugin-seller-api",
     "description": "Package of API definitions and basic implementation for Marketplacer Sellers",
     "type": "magento2-module",
     "version": "2.0.0",
     "require": {
-        "marketplacer/magento2-plugin-base": "^2.0.0"
+        "marketplacer1/magento2-plugin-base": "^2.0.0"
     },
     "autoload": {
         "files": [
