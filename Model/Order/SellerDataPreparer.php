@@ -5,10 +5,11 @@ namespace Marketplacer\SellerApi\Model\Order;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Model\Quote\Item as QuoteItem;
+use Magento\Quote\Model\Quote\Item\AbstractItem;
 use Magento\Sales\Model\AbstractModel as SalesAbstractModel;
 use Magento\Sales\Model\Order\Invoice\Item as InvoiceItem;
 use Magento\Sales\Model\Order\Shipment\Item as ShipmentItem;
+use Magento\Quote\Model\Quote\Address\Item as AddressItem;
 use Marketplacer\SellerApi\Api\SellerRepositoryInterface;
 use Marketplacer\SellerApi\Api\Data\OrderItemInterface;
 use Marketplacer\SellerApi\Api\SellerAttributeRetrieverInterface;
@@ -113,7 +114,7 @@ class SellerDataPreparer
     }
 
     /**
-     * @param QuoteItem[] $quoteItems
+     * @param AbstractItem[] $quoteItems
      * @return array
      * @throws LocalizedException
      */
@@ -130,11 +131,11 @@ class SellerDataPreparer
     }
 
     /**
-     * @param QuoteItem $quoteItem
+     * @param AbstractItem $quoteItem
      * @return mixed
      * @throws LocalizedException
      */
-    public function getSellerIdByQuoteItem(QuoteItem $quoteItem)
+    public function getSellerIdByQuoteItem(AbstractItem $quoteItem)
     {
         $sellerAttributeCode = $this->sellerAttributeRetriever->getAttributeCode();
         return $quoteItem->getProduct()->getData($sellerAttributeCode);
@@ -186,6 +187,9 @@ class SellerDataPreparer
     public function getSellerIdBySalesItem($salesItem)
     {
         $orderItem = $salesItem;
+        if ($salesItem instanceof AddressItem) {
+            return null;
+        }
         if ($salesItem instanceof InvoiceItem || $salesItem instanceof ShipmentItem) {
             $orderItem = $salesItem->getOrderItem();
         }
@@ -199,6 +203,9 @@ class SellerDataPreparer
     public function getSellerNameBySalesItem($salesItem)
     {
         $orderItem = $salesItem;
+        if ($salesItem instanceof AddressItem) {
+            return null;
+        }
         if ($salesItem instanceof InvoiceItem || $salesItem instanceof ShipmentItem) {
             $orderItem = $salesItem->getOrderItem();
         }
@@ -212,6 +219,9 @@ class SellerDataPreparer
     public function getSellerBusinessNumberBySalesItem($salesItem)
     {
         $orderItem = $salesItem;
+        if ($salesItem instanceof AddressItem) {
+            return null;
+        }
         if ($salesItem instanceof InvoiceItem || $salesItem instanceof ShipmentItem) {
             $orderItem = $salesItem->getOrderItem();
         }

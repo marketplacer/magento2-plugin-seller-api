@@ -203,7 +203,7 @@ class SellerDataPreparerTest extends TestCase
 
     public function testGetSellerNamesBySalesItems()
     {
-        $resulSellerNames = [
+        $resultSellerNames = [
             5 => 'Test Invoice Seller 1',
             10 => 'Test Shipment Seller 2',
             20 => 'Test Order Seller 4',
@@ -245,10 +245,12 @@ class SellerDataPreparerTest extends TestCase
             ->withConsecutive([OrderItemInterface::SELLER_ID], [OrderItemInterface::SELLER_NAME])
             ->willReturnOnConsecutiveCalls(20, 'Test Order Seller 4');
 
+        $addressItemMock = $this->createMock(\Magento\Quote\Model\Quote\Address\Item::class);
+
         $this->assertEquals(
-            $resulSellerNames,
+            $resultSellerNames,
             $this->sellerDataPreparer->getSellerNamesBySalesItems(
-                [$invoiceItemMock, $shipmentItemMock, $orderItemMock3, $orderItemMock4]
+                [$invoiceItemMock, $shipmentItemMock, $orderItemMock3, $orderItemMock4, $addressItemMock]
             )
         );
     }
@@ -297,10 +299,15 @@ class SellerDataPreparerTest extends TestCase
             ->withConsecutive([OrderItemInterface::SELLER_ID], [OrderItemInterface::SELLER_BUSINESS_NUMBER])
             ->willReturnOnConsecutiveCalls(20, 'Test Order ABN 4');
 
+        $addressItemMock = $this->createMock(\Magento\Quote\Model\Quote\Address\Item::class);
+        $addressItemMock
+            ->expects($this->never())
+            ->method('getData');
+
         $this->assertEquals(
             $resulSellerNames,
             $this->sellerDataPreparer->getSellerBusinessNumbersBySalesItems(
-                [$invoiceItemMock, $shipmentItemMock, $orderItemMock3, $orderItemMock4]
+                [$invoiceItemMock, $shipmentItemMock, $orderItemMock3, $orderItemMock4, $addressItemMock]
             )
         );
     }
