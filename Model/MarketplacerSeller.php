@@ -232,4 +232,26 @@ class MarketplacerSeller extends AbstractModel implements MarketplacerSellerInte
         $this->setData(MarketplacerSellerInterface::SHIPPING_POLICY, $shippingPolicy);
         return $this;
     }
+
+    /**
+     * Get status
+     *
+     * @return int|null
+     */
+    public function getStatus(): ?int
+    {
+        return $this->hasData(MarketplacerSellerInterface::STATUS)
+         ? (int)$this->_getData(MarketplacerSellerInterface::STATUS) : null;
+    }
+
+    /**
+     * Set status
+     *
+     * @param int $status
+     * @return self
+     */
+    public function setStatus(int $status): self
+    {
+        return $this->setData(self::STATUS, $status);
+    }
 }
