@@ -19,6 +19,7 @@ interface MarketplacerSellerInterface extends DataObjectInterface
     public const SHIPPING_POLICY = 'shipping_policy';
     public const EMAIL_ADDRESS = 'email_address';
     public const STATUS = 'status';
+    public const SOURCE_CODE = 'source_code';
 
     /**
      * Get Seller ID
@@ -172,4 +173,19 @@ interface MarketplacerSellerInterface extends DataObjectInterface
      * @return self
      */
     public function setStatus(int $status): self;
+
+    /**
+     * Get source code
+     *
+     * @return string
+     */
+    public function getSourceCode(): string;
+
+    /**
+     * Set source code
+     *
+     * @param string $sourceCode
+     * @return self
+     */
+    public function setSourceCode(string $sourceCode): self;
 }

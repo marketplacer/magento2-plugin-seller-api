@@ -254,4 +254,25 @@ class MarketplacerSeller extends AbstractModel implements MarketplacerSellerInte
     {
         return $this->setData(self::STATUS, $status);
     }
+
+    /**
+     * Get source code
+     *
+     * @return string
+     */
+    public function getSourceCode(): string
+    {
+        return (string)$this->_getData(MarketplacerSellerInterface::SOURCE_CODE);
+    }
+
+    /**
+     * Set source code
+     *
+     * @param string $sourceCode
+     * @return self
+     */
+    public function setSourceCode(string $sourceCode): self
+    {
+        return $this->setData(MarketplacerSellerInterface::SOURCE_CODE, $sourceCode);
+    }
 }
