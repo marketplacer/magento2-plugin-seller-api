@@ -275,4 +275,53 @@ class MarketplacerSeller extends AbstractModel implements MarketplacerSellerInte
     {
         return $this->setData(MarketplacerSellerInterface::SOURCE_CODE, $sourceCode);
     }
+
+    /**
+     * Set base domestic shipping cost applied at the Seller level
+     *
+     * @param float $value
+     * @return self
+     */
+    public function setBaseDomesticShippingCost(float $value): self
+    {
+        return $this->setData(MarketplacerSellerInterface::BASE_DOMESTIC_SHIPPING_COST, $value);
+    }
+
+    /**
+     * Get base domestic shipping cost applied at the Seller level
+     *
+     * @return float
+     */
+    public function getBaseDomesticShippingCost(): float
+    {
+        return (float)$this->_getData(
+            MarketplacerSellerInterface::BASE_DOMESTIC_SHIPPING_COST
+        );
+    }
+
+    /**
+     * Set base domestic shipping free threshold applied at the Seller level
+     *
+     * @param float $value
+     * @return self
+     */
+    public function setBaseDomesticShippingFreeThreshold(float $value): MarketplacerSellerInterface
+    {
+        return $this->setData(
+            MarketplacerSellerInterface::BASE_DOMESTIC_SHIPPING_FREE_THRESHOLD,
+            $value
+        );
+    }
+
+    /**
+     * Get base domestic shipping free threshold applied at the Seller level
+     *
+     * @return float
+     */
+    public function getBaseDomesticShippingFreeThreshold(): float
+    {
+        return (float)$this->_getData(
+            MarketplacerSellerInterface::BASE_DOMESTIC_SHIPPING_FREE_THRESHOLD
+        );
+    }
 }

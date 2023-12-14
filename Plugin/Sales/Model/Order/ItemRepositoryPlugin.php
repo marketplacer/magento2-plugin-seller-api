@@ -67,6 +67,10 @@ class ItemRepositoryPlugin
 
         $extensionAttributes->setSellerId($item->getSellerId());
         $extensionAttributes->setSellerName($item->getSellerName());
+        $extensionAttributes->setBaseShippingFee($item->getBaseShippingFee());
+        $extensionAttributes->setShippingFee($item->getShippingFee());
+        $extensionAttributes->setBaseShippingTaxAmount($item->getBaseShippingTaxAmount());
+        $extensionAttributes->setShippingTaxAmount($item->getShippingTaxAmount());
 
         $item->setExtensionAttributes($extensionAttributes);
     }

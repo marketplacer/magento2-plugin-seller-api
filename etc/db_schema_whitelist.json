@@ -10,7 +10,11 @@
         "column": {
             "seller_id": true,
             "seller_name": true,
-            "seller_business_number": true
+            "seller_business_number": true,
+            "base_shipping_fee": true,
+            "shipping_fee": true,
+            "base_shipping_tax_amount": true,
+            "shipping_tax_amount" : true
         }
     },
     "sales_order_grid": {

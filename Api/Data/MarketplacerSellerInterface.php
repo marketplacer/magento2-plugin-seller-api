@@ -20,6 +20,8 @@ interface MarketplacerSellerInterface extends DataObjectInterface
     public const EMAIL_ADDRESS = 'email_address';
     public const STATUS = 'status';
     public const SOURCE_CODE = 'source_code';
+    public const BASE_DOMESTIC_SHIPPING_COST = 'base_domestic_shipping_cost';
+    public const BASE_DOMESTIC_SHIPPING_FREE_THRESHOLD = 'base_domestic_shipping_free_threshold';
 
     /**
      * Get Seller ID
@@ -188,4 +190,34 @@ interface MarketplacerSellerInterface extends DataObjectInterface
      * @return self
      */
     public function setSourceCode(string $sourceCode): self;
+
+    /**
+     * Set base domestic shipping cost applied at the Seller level
+     *
+     * @param float $value
+     * @return self
+     */
+    public function setBaseDomesticShippingCost(float $value): self;
+
+    /**
+     * Get base domestic shipping cost applied at the Seller level
+     *
+     * @return float
+     */
+    public function getBaseDomesticShippingCost(): float;
+
+    /**
+     * Set base domestic shipping free threshold applied at the Seller level
+     *
+     * @param float $value
+     * @return self
+     */
+    public function setBaseDomesticShippingFreeThreshold(float $value): self;
+
+    /**
+     * Get base domestic shipping free threshold applied at the Seller level
+     *
+     * @return float
+     */
+    public function getBaseDomesticShippingFreeThreshold(): float;
 }

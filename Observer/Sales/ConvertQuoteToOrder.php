@@ -4,24 +4,21 @@ namespace Marketplacer\SellerApi\Observer\Sales;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\Data\OrderItemInterface;
+use Marketplacer\SellerApi\Api\Data\OrderItemInterface as SellerOrderItemInterface;
 use Marketplacer\SellerApi\Model\Order\SellerDataPreparer;
-use Marketplacer\SellerApi\Api\Data\OrderInterface;
+use Marketplacer\SellerApi\Api\Data\OrderInterface as SellerOrderInterface;
 
 class ConvertQuoteToOrder implements ObserverInterface
 {
-    /**
-     * @var SellerDataPreparer
-     */
-    protected $sellerDataPreparer;
-
     /**
      * ConvertQuoteToOrder constructor.
      * @param SellerDataPreparer $sellerDataPreparer
      */
     public function __construct(
-        SellerDataPreparer $sellerDataPreparer
+        private readonly SellerDataPreparer $sellerDataPreparer
     ) {
-        $this->sellerDataPreparer = $sellerDataPreparer;
     }
 
     /**
@@ -40,10 +37,65 @@ class ConvertQuoteToOrder implements ObserverInterface
 
         $items = $quote->getAllVisibleItems();
         $sellerIds = $this->sellerDataPreparer->getSellerIdsByQuoteItems($items);
-        $sellerNames = $this->sellerDataPreparer->getSellerNamesByIds($sellerIds, $order->getStoreId());
+        $sellerNames = $this->sellerDataPreparer->getSellerNamesByIds(
+            $sellerIds,
+            $order->getStoreId()
+        );
 
-        $order->setData(OrderInterface::SELLER_IDS, implode(',', $sellerIds));
-        $order->setData(OrderInterface::SELLER_NAMES, implode(', ', $sellerNames));
+        $order->setData(SellerOrderInterface::SELLER_IDS, implode(',', $sellerIds));
+        $order->setData(SellerOrderInterface::SELLER_NAMES, implode(', ', $sellerNames));
+
+        $this->addShippingInfoToOrderLineItems($order);
+
         return $this;
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @return void
+     */
+    private function addShippingInfoToOrderLineItems(OrderInterface $order): void
+    {
+        $orderData = [
+            SellerOrderItemInterface::BASE_SHIPPING_FEE =>
+                (float)$order->getBaseShippingInclTax(),
+            SellerOrderItemInterface::SHIPPING_FEE =>
+                (float)$order->getShippingInclTax(),
+            SellerOrderItemInterface::BASE_SHIPPING_TAX_AMOUNT =>
+                (float)$order->getBaseShippingTaxAmount(),
+            SellerOrderItemInterface::SHIPPING_TAX_AMOUNT =>
+                (float)$order->getShippingTaxAmount(),
+        ];
+
+        $countItems = (int)$order->getTotalQtyOrdered();
+
+        $forItem = [];
+        foreach ($orderData as $field => $value) {
+            $forItem[$field] = floor($value * 100 / $countItems) / 100;
+        }
+
+        /** @var OrderItemInterface[] $items */
+        $items = $order->getAllVisibleItems();
+
+        foreach ($items as $orderItem) {
+            foreach ($forItem as $key => $value) {
+                $fieldValue = round(
+                    $value * $orderItem->getQtyOrdered(),
+                    2,
+                    PHP_ROUND_HALF_DOWN
+                );
+                $orderItem->setData($key, $fieldValue);
+
+                $orderData[$key] = round($orderData[$key] - $fieldValue, 2);
+            }
+        }
+
+        if ($orderData[SellerOrderItemInterface::BASE_SHIPPING_FEE] > 0) {
+            $firstItem = $items[0];
+            foreach ($orderData as $key => $value) {
+                $fieldValue = round($firstItem->getData($key) + $value, 2);
+                $firstItem->setData($key, $fieldValue);
+            }
+        }
     }
 }

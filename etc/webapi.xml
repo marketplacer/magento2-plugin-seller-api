@@ -8,6 +8,12 @@
 <!--            <resource ref="Marketplacer_Seller::seller_api"/>-->
 <!--        </resources>-->
 <!--    </route>-->
+    <route url="/V1/seller/:sellerId" method="GET">
+        <service class="Marketplacer\SellerApi\Api\SellerManagementInterface" method="getById"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
     <route url="/V1/seller" method="POST">
         <service class="Marketplacer\SellerApi\Api\SellerManagementInterface" method="save"/>
         <resources>

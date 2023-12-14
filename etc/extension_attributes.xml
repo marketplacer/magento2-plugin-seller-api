@@ -3,5 +3,9 @@
     <extension_attributes for="Magento\Sales\Api\Data\OrderItemInterface">
         <attribute code="seller_id" type="int"/>
         <attribute code="seller_name" type="string"/>
+        <attribute code="base_shipping_fee" type="float"/>
+        <attribute code="shipping_fee" type="float"/>
+        <attribute code="base_shipping_tax_amount" type="float"/>
+        <attribute code="shipping_tax_amount" type="float"/>
     </extension_attributes>
 </config>
