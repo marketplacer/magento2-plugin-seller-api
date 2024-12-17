@@ -90,7 +90,6 @@ class ConvertQuoteToOrder implements ObserverInterface
             }
         }
 
-
         if ($orderData[SellerOrderItemInterface::BASE_SHIPPING_FEE] > 0 || $orderData[SellerOrderItemInterface::BASE_SHIPPING_TAX_AMOUNT] > 0) {
             $firstItem = $items[0];
             foreach ($orderData as $key => $value) {
