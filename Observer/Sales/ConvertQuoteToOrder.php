@@ -71,7 +71,7 @@ class ConvertQuoteToOrder implements ObserverInterface
 
         $forItem = [];
         foreach ($orderData as $field => $value) {
-            $forItem[$field] = floor($value * 100 / $countItems) / 100;
+            $forItem[$field] = round($value * 100 / $countItems,5,PHP_ROUND_HALF_DOWN) / 100;
         }
 
         /** @var OrderItemInterface[] $items */
@@ -81,19 +81,19 @@ class ConvertQuoteToOrder implements ObserverInterface
             foreach ($forItem as $key => $value) {
                 $fieldValue = round(
                     $value * $orderItem->getQtyOrdered(),
-                    2,
+                    5,
                     PHP_ROUND_HALF_DOWN
                 );
-                $orderItem->setData($key, $fieldValue);
+                $orderItem->setData($key, round($fieldValue, 4,PHP_ROUND_HALF_DOWN));
 
-                $orderData[$key] = round($orderData[$key] - $fieldValue, 2);
+                $orderData[$key] = round($orderData[$key] - $fieldValue, 4);
             }
         }
 
-        if ($orderData[SellerOrderItemInterface::BASE_SHIPPING_FEE] > 0) {
+        if ($orderData[SellerOrderItemInterface::BASE_SHIPPING_FEE] > 0 || $orderData[SellerOrderItemInterface::BASE_SHIPPING_TAX_AMOUNT] > 0) {
             $firstItem = $items[0];
             foreach ($orderData as $key => $value) {
-                $fieldValue = round($firstItem->getData($key) + $value, 2);
+                $fieldValue = round($firstItem->getData($key) + $value, 4);
                 $firstItem->setData($key, $fieldValue);
             }
         }
