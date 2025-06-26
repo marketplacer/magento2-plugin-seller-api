@@ -17,7 +17,7 @@ interface MarketplacerSellerSearchResultsInterface
      * @param \Marketplacer\SellerApi\Api\Data\MarketplacerSellerInterface[] $sellers
      * @return $this
      */
-    public function setSellers(array $sellers = null);
+    public function setSellers(?array $sellers = null);
 
     /**
      * Get search criteria.

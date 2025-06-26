@@ -51,7 +51,7 @@ class SellerDataPreparer
      * @param int | string | null $storeId
      * @return array
      */
-    public function getSellerNamesByIds(array $sellerIds, $storeId = null)
+    public function getSellerNamesByIds(?array $sellerIds, $storeId = null)
     {
         $result = [];
         foreach ($sellerIds as $sellerId) {
@@ -70,7 +70,7 @@ class SellerDataPreparer
      * @throws NoSuchEntityException
      * @throws LocalizedException
      */
-    public function getSellerBusinessNumbersByIds(array $sellerIds, $storeId = null)
+    public function getSellerBusinessNumbersByIds(?array $sellerIds, $storeId = null)
     {
         $result = [];
         foreach ($sellerIds as $sellerId) {

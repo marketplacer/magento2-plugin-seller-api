@@ -26,7 +26,7 @@ class MarketplacerSellerSearchResults extends SearchResult implements \Marketpla
      * @param \Marketplacer\SellerApi\Api\Data\MarketplacerSellerInterface[] $sellers
      * @return $this
      */
-    public function setSellers(array $sellers = null)
+    public function setSellers(?array $sellers = null)
     {
         return $this->setItems($sellers);
     }
